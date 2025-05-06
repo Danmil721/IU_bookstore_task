@@ -3,41 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buchverwaltung mit Vue.js</title>
+  <title>Book Haven - Online Bookstore</title>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="app">
-    <h1>Meine Bücherei</h1>
-    
-    <!-- Buchliste als Tabelle -->
-    <table>
-      <thead>
-        <tr>
-          <th>Titel</th>
-          <th>Autor</th>
-          <th>Jahr</th>
-          <th>Genre</th>
-          <th>Aktionen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(book, index) in books" :key="index">
-          <td>{{ book.title }}</td>
-          <td>{{ book.author }}</td>
-          <td>{{ book.year }}</td>
-          <td>{{ book.genre }}</td>
-          <td>
-            <button @click="editBook(index)">Bearbeiten</button>
-            <button @click="deleteBook(index)">Löschen</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
+  <div class="top-bar"></div>
+
+  <header class="site-header">
+    <div class="logo-title">
+      <img src="/Users/danielmiller/IU_bookstore/Task_3/Images/Bookstore_logo.jpg" alt="Book Haven Logo" class="logo">
+      
+      <h1>Book Haven</h1>
+    </div>
+
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Local shop</a></li>
+        <li><a href="#">Shopping cart</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <img src="/Users/danielmiller/IU_bookstore/Task_5/Images/Bookstore_Homepage.jpg" alt="Book Haven - photo from Jeremy Bishop on Unsplash" class="viewer" />
+
+    <section class="book-gallery">
+      <div class="book-item">
+        <img src="/Users/danielmiller/IU_bookstore/Task_5/Images/China.jpeg" alt="Cover from Book 1" class="book-image">
+        <div class="book-info">
+          <h3>China für die Hosentasche</h3>
+          <p>by Francoise Hauser</p>
+          <p>$11.95</p>
+          <p>Cover picture: © Fischer Taschenbuch Verlag, source: https://www.thalia.de</p>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <img src="/Users/danielmiller/IU_bookstore/Task_5/Images/Ludwig.jpeg" alt="Cover von Buch 2" class="book-image">
+        <div class="book-info">
+          <h3>Ludwig von Mises</h3>
+          <p>by Thorsten Polleit</p>
+          <p>$14.95</p>
+          <p>Cover picture: © Polleit, source: https://www.thalia.de</p>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <img src="/Users/danielmiller/IU_bookstore/Task_5/Images/Finance.jpeg" alt="Cover von Buch 3" class="book-image">
+        <div class="book-info">
+          <h3>Applied Fundamentals in Finance</h3>
+          <p>by Portfolio Management and Investments</p>
+          <p>$121.99</p>
+          <p>Cover picture: © Springer Fachmedien, source: https://www.thalia.de</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="book-categories">
+      <h2>Books by Category:</h2>
+      
+      <ul class="category-list">
+        <li><a href="#">Science</a></li>
+        <li><a href="#">Comedy</a></li>
+        <li><a href="#">Action</a></li>
+        <li><a href="#">Business</a></li>
+      </ul>
+    </section>
+
+    <section class="ranked-books">
+      <h2>Top Ranked Books</h2>
+      
+      <ol class="ranked-list">
+        <li>China für die Hosentasche – by Francoise Hauser</li>
+        <li>Ludwig von Mises – by Thorsten Polleit</li>
+        <li>Applied Fundamentals in Finance – by Portfolio Management and Investments</li>
+      </ol>
+    </section>
+    <p style="margin-bottom: 50px;"></p>
+
+  <div id="app">
+    <div class="top-bar"></div>
+    
     <!-- Formular zum Hinzufügen/Bearbeiten -->
-    <h2>{{ editingIndex === null ? 'Buch hinzufügen' : 'Buch bearbeiten' }}</h2>
+    <h2>{{ editingIndex === null ? 'Add a book to your wish list' : 'Edit book' }}</h2>
     <form @submit.prevent="submitBook">
       <div>
         <label for="title">Titel:</label>
@@ -63,10 +116,36 @@
         <span class="error" v-if="errors.genre">{{ errors.genre }}</span>
       </div>
       
-      <button type="submit">{{ editingIndex === null ? 'Hinzufügen' : 'Aktualisieren' }}</button>
-      <button type="button" @click="cancelEdit" v-if="editingIndex !== null">Abbrechen</button>
+      <button type="submit">{{ editingIndex === null ? 'Add' : 'Edit' }}</button>
+      <button type="button" @click="cancelEdit" v-if="editingIndex !== null">Cancel</button>
     </form>
+
+     <!-- Buchliste als Tabelle -->
+     <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Year</th>
+          <th>Genre</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(book, index) in books" :key="index">
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.year }}</td>
+          <td>{{ book.genre }}</td>
+          <td>
+            <button @click="editBook(index)">Edit</button>
+            <button @click="deleteBook(index)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</main>
 
   <script src="app.js"></script>
 </body>
