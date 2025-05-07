@@ -4,38 +4,38 @@ import json
 import os
 
 app = Flask(__name__)
-CORS(app)  # Erlaubt Cross-Origin-Anfragen
+CORS(app)  
 
-# Pfad zur books.json-Datei
+# source to books.json-file
 BOOKS_FILE = os.path.join(os.path.dirname(__file__), '../Task_5/books.json')
 
 
 
-# Hilfsfunktion: JSON-Datei lesen. öffnet im Lesemodus (r=read). open = öffnen und 
-# with stellt sicher, dass die datei nach dem lesen wieder geschlossen wird.
-# as f: Gibt der geöffneten Datei den Namen f (eine Variable, die die Datei repräsentiert).
-# return json.load(f) :Liest den Inhalt von books.json und wandelt ihn von JSON
-#  in ein Python-Objekt um. json.load(f) macht daraus eine Python-Liste:
-# Gibt die Liste der Bücher zurück, die andere Teile des Codes (z. B. Endpunkte) verwenden können.
+# Helper function: Reads JSON file
+# - Opens file in read mode ('r')
+# - 'with' ensures automatic file closure after reading
+# - 'as f' assigns the file object to variable 'f'
+# - json.load(f) converts JSON content into a Python object (list/dict)
+# Returns book list for use by other code components (e.g., API endpoints)
 def read_books():
     with open(BOOKS_FILE, 'r') as f:
         return json.load(f)
 
-# Hilfsfunktion: JSON-Datei schreiben. 
+# writes JSON data
 def write_books(books):
     with open(BOOKS_FILE, 'w') as f:
         json.dump(books, f, indent=2)
 
-# Alle Bücher abrufen
+# retrieve all books
 @app.route('/books', methods=['GET'])
 def get_books():
     try:
         books = read_books()
         return jsonify(books)
     except Exception as e:
-        return jsonify({'error': 'Fehler beim Lesen der Bücher'}), 500
+        return jsonify({'error': 'failed to read books'}), 500
 
-# Neues Buch hinzufügen
+# add a new book
 @app.route('/books', methods=['POST'])
 def add_book():
     try:
@@ -45,9 +45,9 @@ def add_book():
         write_books(books)
         return jsonify(new_book), 201
     except Exception as e:
-        return jsonify({'error': 'Fehler beim Hinzufügen des Buchs'}), 500
+        return jsonify({'error': 'failed to add a book'}), 500
 
-# Buch aktualisieren (nach Titel)
+# update books based on title
 @app.route('/books/<title>', methods=['PUT'])
 def update_book(title):
     try:
@@ -58,11 +58,11 @@ def update_book(title):
                 books[i] = updated_book
                 write_books(books)
                 return jsonify(updated_book)
-        return jsonify({'error': 'Buch nicht gefunden'}), 404
+        return jsonify({'error': 'book not found'}), 404
     except Exception as e:
-        return jsonify({'error': 'Fehler beim Aktualisieren des Buchs'}), 500
+        return jsonify({'error': 'failed to update the book'}), 500
 
-# Buch löschen (nach Titel)
+# delete book
 @app.route('/books/<title>', methods=['DELETE'])
 def delete_book(title):
     try:
@@ -71,10 +71,10 @@ def delete_book(title):
             if book['title'] == title:
                 books.pop(i)
                 write_books(books)
-                return jsonify({'message': 'Buch gelöscht'})
-        return jsonify({'error': 'Buch nicht gefunden'}), 404
+                return jsonify({'message': 'book deleted'})
+        return jsonify({'error': 'book not found'}), 404
     except Exception as e:
-        return jsonify({'error': 'Fehler beim Löschen des Buchs'}), 500
+        return jsonify({'error': 'failed to delete book'}), 500
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
