@@ -13,7 +13,7 @@
 
   <header class="site-header">
     <div class="logo-title">
-      <img src="/Users/danielmiller/IU_bookstore/Task_3/Images/Bookstore_logo.jpg" alt="Book Haven Logo" class="logo">
+      <img src="/Users/danielmiller/IU_bookstore/Task_5/Images/Bookstore_logo.jpg" alt="Book Haven Logo" class="logo">
       
       <h1>Book Haven</h1>
     </div>
@@ -86,15 +86,23 @@
     </section>
     <p style="margin-bottom: 50px;"></p>
 
+
+    <!-- Task 5 starts here -->
   <div id="app">
     <div class="top-bar"></div>
     
-    <!-- Formular zum Hinzufügen/Bearbeiten -->
+    <!-- Conditional headline rendering based on editing mode -->
+    <!-- Shows "Add..." when no book is edited (editingIndex=null), else "Edit book" -->
     <h2>{{ editingIndex === null ? 'Add a book to your wish list' : 'Edit book' }}</h2>
+    <!-- Vue's @submit.prevent prevents default form submission -->
+    <!-- and delegates to the submitBook method for client-side handling -->
     <form @submit.prevent="submitBook">
       <div>
-        <label for="title">Titel:</label>
+        <label for="title">Title:</label>
+          <!-- v-model binds input to form.title (reactive property) -->
+          <!-- Enables two-way data synchronization between input and Vue state -->
         <input type="text" id="title" v-model="form.title" >
+        <!-- Conditionally renders error message if errors.title exists -->
         <span class="error" v-if="errors.title">{{ errors.title }}</span>
       </div>
       
@@ -117,10 +125,12 @@
       </div>
       
       <button type="submit">{{ editingIndex === null ? 'Add' : 'Edit' }}</button>
+      <!-- Conditionally renders Cancel button in edit mode (editingIndex !== null) -->
+      <!-- Invokes cancelEdit() to reset form and exit edit mode -->
       <button type="button" @click="cancelEdit" v-if="editingIndex !== null">Cancel</button>
     </form>
 
-     <!-- Buchliste als Tabelle -->
+     <!-- book list as a table -->
      <table>
       <thead>
         <tr>
@@ -132,6 +142,8 @@
         </tr>
       </thead>
       <tbody>
+        <!-- A v-for loop is used to render the book list reactively in the browser. -->
+        <!-- When a book is added to or removed from the list, the table updates automatically without a page reload. -->
         <tr v-for="(book, index) in books" :key="index">
           <td>{{ book.title }}</td>
           <td>{{ book.author }}</td>
